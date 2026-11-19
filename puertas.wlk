@@ -202,7 +202,7 @@ class PuertaPalancas inherits Puerta {
         const puertaPasillo2JefeGordo = new Puerta(
             destino = salaJefeGordo,
             puertaDeVuelta = puertaJefeGordoPasillo2,
-            llaveRequerida = llaveNula
+            llaveRequerida = llavePreGordo
         )
 
         const puertaJefeGordoPasillo2 = new Puerta(
@@ -252,5 +252,6 @@ class PuertaPalancas inherits Puerta {
         const puertaAntesalaKrauser = new Puerta(destino = salaKrauser, puertaDeVuelta = puertaKrauserAntesala, llaveRequerida = llaveNula)
         const puertaKrauserAntesala = new Puerta(destino = antesalaKrauser, puertaDeVuelta = puertaAntesalaKrauser, llaveRequerida = llaveNula)
 
-        const puertaKrauserFinal = new Puerta(destino = salaFinal, puertaDeVuelta = vacio, llaveRequerida = llaveKrauser)
+        const puertaKrauserFinal = new Puerta(destino = salaFinal, puertaDeVuelta = puertaFinalKrauser, llaveRequerida = llaveKrauser)
+        const puertaFinalKrauser = new Puerta(destino = salaKrauser, puertaDeVuelta = puertaKrauserFinal, llaveRequerida = llaveFinal)
         
