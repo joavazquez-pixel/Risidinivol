@@ -122,7 +122,7 @@ const moto = new Bote(posicion = game.at(19, 8), dialogoFijo =  cartelBote)
 const pregordo = new Gordo(posicion = game.at(22,3), dialogoFijo = dialogoPuertaGordo)
 
 object gestorNpcs {
-    const npcs = [luisito, ashley, palancas]
+    const npcs = [luisito, ashley, palancas, moto, pregordo]
     const activos = []          
 
     method actualizar(sala) {
