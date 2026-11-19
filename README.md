@@ -7,6 +7,7 @@ UTN FRBA
 * Luciano Nahuel Cáceres
 * Tomás Caggiano
 * Joaquín Eduardo Vázquez
+* Álvaro Vera
 
 
 CÓMO JUEGAR:

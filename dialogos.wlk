@@ -47,7 +47,7 @@ const dialogoEscopeta = new CartelSecuencia(
 )
 
 const dialogoEnanoMuerto = new CartelSecuencia(
-    imagenes = ["dialogo_postenano1.png","dialogo_postenano2.png" ],
+    imagenes = ["dialogo_postenano.png"],
     posicion = game.at(9,12)
 )
 
@@ -58,11 +58,6 @@ const dialogoPuertaGordo = new CartelSecuencia(
 
 const dialogoGordoMuerto = new CartelSecuencia(
     imagenes = ["dialogo_gordo1.png","dialogo_gordo2.png"],
-    posicion = game.at(9,12)
-)
-
-const dialogoPeladoMuerto = new CartelSecuencia(
-    imagenes = [],
     posicion = game.at(9,12)
 )
 

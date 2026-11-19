@@ -100,7 +100,7 @@ class Gordo inherits Npc {
 
 const dialogoLuisito = new CartelSecuencia(
     imagenes = ["luisito1.png", "luisito2.png", "luisito3.png"],
-    posicion = game.at(12, 13)
+    posicion = game.at(10, 12)
 )
 
 const dialogosAshley = [
@@ -122,7 +122,7 @@ const moto = new Bote(posicion = game.at(19, 8), dialogoFijo =  cartelBote)
 const pregordo = new Gordo(posicion = game.at(22,3), dialogoFijo = dialogoPuertaGordo)
 
 object gestorNpcs {
-    const npcs = [luisito, ashley, palancas, moto, pregordo]
+    const npcs = [luisito, ashley, palancas]
     const activos = []          
 
     method actualizar(sala) {
