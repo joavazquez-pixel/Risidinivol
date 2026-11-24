@@ -20,6 +20,7 @@ object municion {
     }
 }
 
+
 class Proyectil {
     const id = municion.siguienteId()
     const nombreArma
@@ -129,13 +130,17 @@ class Arma {
         pausa = true
         game.schedule(tiempoPausa, { pausa = false })
     }
+    
+    method mostrarContador() { }
 }
 
 class Escopeta inherits Arma {
     var balas = 0
 
+    method cantidad() = balas
     method balas() = balas
     method cargar(cantidad) { balas += cantidad }
+    method vaciar() { balas = 0 }
 
     override method disparar() {
         if (!pausa && balas > 0) {
@@ -196,6 +201,9 @@ class Escopeta inherits Arma {
             direccion.desde(personaje.position(), posicion).x() + ortogonal.desde(game.at(0,0), expansion).x(),
             direccion.desde(personaje.position(), posicion).y() + ortogonal.desde(game.at(0,0), expansion).y()
         )
+     override method mostrarContador() {
+        hudEscopeta.forEach({ v => game.addVisual(v) })
+    }
 }
 
 class LanzaPapas inherits Arma {
@@ -203,6 +211,8 @@ class LanzaPapas inherits Arma {
 
     method granadas() = granadas
     method cargar(cantidad) { granadas += cantidad }
+    method vaciar() { granadas = 0 }
+    method cantidad() = granadas
 
     override method disparar() {
         if (!pausa && granadas > 0) {
@@ -221,6 +231,9 @@ class LanzaPapas inherits Arma {
                 self.reproducirSonido()
             }
         }
+    }
+        override method mostrarContador() {
+        hudGranadas.forEach({ v => game.addVisual(v) })
     }
 }
 
@@ -264,9 +277,10 @@ object inventario{
     var armaElegida = 0
 
     method aniadirArma(arma) {
-        if (!listaInventario.contains(arma)) {
-            listaInventario.add(arma)
-            game.addVisual(new IconoInventario(arma = arma, indice = listaInventario.size() - 1))
+    if (!listaInventario.contains(arma)) {
+        listaInventario.add(arma)
+        game.addVisual(new IconoInventario(arma = arma, indice = listaInventario.size() - 1))
+        arma.mostrarContador()
         }
     }
     method cambiarArma(){
@@ -290,9 +304,50 @@ object inventario{
     method arma(indice) = listaInventario.get(indice)
     method estaSeleccionada(indice) = armaElegida == indice
     method armas() = listaInventario 
+    method reiniciar() {
+        listaInventario.clear()
+        listaInventario.add(cuchillo)
+        listaInventario.add(revolver)
+        armaElegida = 0
+        soloCuchillo = false
+        escopeta.vaciar()
+        lanzaPapoides.vaciar()
+    }
+}
+
+class IconoMunicion {
+    const imagen
+    const desdeDerecha
+
+    method position() = game.at(game.width() - desdeDerecha, 0)
+    method image() = imagen
+    method estaVivo() = false
+}
+
+class Digito {
+    const arma
+    const desdeDerecha
+    const esDecena
+
+    method position() = game.at(game.width() - desdeDerecha, 0)
+    method estaVivo() = false
+
+    method cantidad() = arma.cantidad().min(99)
+    method valor() = if (esDecena) self.cantidad().div(10) else self.cantidad() % 10
+    method image() = "numero_" + self.valor() + ".png"
 }
 
 
+const iconoEscopeta     = new IconoMunicion(imagen = "balas_escopeta.png", desdeDerecha = 7)
+const decenasEscopeta   = new Digito(arma = escopeta, desdeDerecha = 6, esDecena = true)
+const unidadesEscopeta  = new Digito(arma = escopeta, desdeDerecha = 5, esDecena = false)
+
+const iconoGranadas     = new IconoMunicion(imagen = "granada_suelo.png", desdeDerecha = 3)
+const decenasGranadas   = new Digito(arma = lanzaPapoides, desdeDerecha = 2, esDecena = true)
+const unidadesGranadas  = new Digito(arma = lanzaPapoides, desdeDerecha = 1, esDecena = false)
+
+const hudEscopeta = [iconoEscopeta, decenasEscopeta, unidadesEscopeta]
+const hudGranadas = [iconoGranadas, decenasGranadas, unidadesGranadas]
 
 object loot {
     method tirar(pos) {
@@ -358,15 +413,15 @@ class ItemCorazon {
 
 class ItemCorazonExtra {
     const posicion
-    const curacion = personaje.saludMaxima()
+    const curacion = (personaje.saludMaxima() + 1)
 
     method position() = posicion
     method image() = "corazon_dorado.png"
     method estaVivo() = false
 
     method alPisar() {
-        personaje.curar(curacion)
         personaje.aniadirVida()
+        personaje.curar(curacion)
         game.removeVisual(self)
     }
 }

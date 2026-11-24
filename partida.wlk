@@ -13,6 +13,8 @@ import jefeFinal.*
 object partida {
     var iniciada = false
 
+    method reiniciar() { iniciada = false }
+
     method comenzar() {
         if (!iniciada) {
             iniciada = true
